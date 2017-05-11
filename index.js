@@ -28,8 +28,10 @@ Owntracks.prototype.init = function () {
   client.on('message', function (topic, message) {
     var data = JSON.parse(message.toString())
       , isNotPing = !data.t || (data.t && data.t !== 'p')
+      , isAccurateEnough = data.acc && data.acc <= 500
 
-    if (data && data._type === 'location' && data.lat && data.lon && data.tid && data.tst, isNotPing) {
+    if (data && data._type === 'location' && data.lat && data.lon && data.tid && data.tst && isNotPing
+      && isAccurateEnough) {
       var person = data.tid
         , now = new Date()
         , messageTime = new Date(data.tst * 1000)
